@@ -2,7 +2,7 @@
   "name": "elementary",
   "version": "0.1.0",
   "private": true,
-  "homepage": "http://dakotabourne373.github.io/wargame",
+  "homepage": "http://dakotabourne373.github.io/elementarydatabase",
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
@@ -36,6 +36,7 @@
   },
   "devDependencies": {
     "firebase": "^7.14.5",
+    "gh-pages": "^2.2.0",
     "react-bootstrap": "^1.0.1",
     "react-firebase": "^2.2.8",
     "react-router": "^5.2.0",
