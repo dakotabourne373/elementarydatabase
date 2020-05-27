@@ -1,0 +1,198 @@
+@import url(https://fonts.googleapis.com/css?family=Roboto);
+ body, html, .board, #react-container {
+	 height: 100%;
+	 overflow: hidden;
+}
+ body {
+	 font-family: 'Roboto', sans-serif;
+	 margin: 0;
+	 padding: 0;
+	 background: #24313c;
+}
+ .board {
+	 width: 100%;
+	 height: 100%;
+}
+ .close {
+	 cursor: pointer;
+	 position: relative;
+	 display: inline-block;
+	 float: right;
+	 margin: 4px;
+	 width: 15px;
+	 height: 15px;
+	 overflow: hidden;
+}
+ .close:hover::before, .close:hover::after {
+	 background: #1ab188;
+	 color: #1ab188;
+}
+ .close::before, .close::after {
+	 content: '';
+	 position: absolute;
+	 width: 100%;
+	 top: 50%;
+	 left: 0;
+	 margin-top: -1px;
+	 background: #000;
+	 height: 1px;
+}
+ .close::before {
+	 -moz-transform: rotate(45deg);
+	 -o-transform: rotate(45deg);
+	 -ms-transform: rotate(45deg);
+	 -webkit-transform: rotate(45deg);
+	 transform: rotate(45deg);
+}
+ .close::after {
+	 -moz-transform: rotate(-45deg);
+	 -o-transform: rotate(-45deg);
+	 -ms-transform: rotate(-45deg);
+	 -webkit-transform: rotate(-45deg);
+	 transform: rotate(-45deg);
+}
+ .main-header {
+	 height: 50px;
+	 background-color: #1ab188;
+	 color: white;
+	 cursor: pointer;
+}
+ .main-header h1 {
+	 font-size: 42px;
+	 color: white;
+	 line-height: 230px;
+	 text-transform: uppercase;
+	 font-weight: 100;
+	 -webkit-transition: all 0.3s ease;
+	 -moz-transition: all 0.3s ease;
+	 -ms-transition: all 0.3s ease;
+	 -o-transition: all 0.3s ease;
+	 transition: all 0.3s ease;
+}
+ .main-header .main-header__text {
+	 padding: 15px;
+}
+ .note {
+	 width: 250px;
+	 height: auto !important;
+	 background: #ffda65;
+	 margin: 2px 0;
+	 position: absolute !important;
+	 cursor: -webkit-grab;
+	 -webkit-box-shadow: 5px 5px 15px 0 rgba(0, 0, 0, .2);
+	 box-shadow: 5px 5px 15px 0 rgba(0, 0, 0, .2);
+}
+ .note .note__textarea {
+	 height: 75%;
+	 width: 98%;
+	 font-size: 16px;
+	 background: #ffda65;
+	 border: none;
+	 overflow: auto;
+	 resize: vertical;
+	 outline: none;
+	 -webkit-box-shadow: none;
+	 -moz-box-shadow: none;
+	 box-shadow: none;
+}
+ .note .note__content {
+	 font-size: 16px;
+	 padding: 5px;
+	 padding-bottom: 25px;
+}
+ .note .note__header {
+	 height: 40px;
+	 width: 100%;
+	 background: #ffd248;
+}
+ .note .note__footer {
+	 position: relative;
+	 bottom: 0px;
+}
+ .note .note__footer .note__save {
+	 float: left;
+	 width: calc(100% - 40px);
+	 height: 40px;
+	 text-align: center;
+	 line-height: 40px;
+	 cursor: pointer;
+	 display: inline-block;
+	 background: #ffc43a;
+	 color: white;
+	 border: none;
+}
+ .note .note__footer .note__save:hover {
+	 background: #ffc43d;
+}
+ .wrapper-tooltip:hover .tooltip {
+	 opacity: 1;
+	 pointer-events: auto;
+	 -webkit-transform: translateY(0px);
+	 -moz-transform: translateY(0px);
+	 -ms-transform: translateY(0px);
+	 -o-transform: translateY(0px);
+	 transform: translateY(0px);
+}
+ .wrapper-tooltip .tooltip {
+	 z-index: 999;
+	 background: #1496bb;
+	 bottom: 100%;
+	 color: white;
+	 display: block;
+	 left: -20px;
+	 margin-bottom: 15px;
+	 opacity: 0;
+	 padding: 20px;
+	 pointer-events: none;
+	 position: absolute;
+	 width: 100%;
+	 -moz-transform: translateY(10px);
+	 -o-transform: translateY(10px);
+	 -ms-transform: translateY(10px);
+	 -webkit-transform: translateY(10px);
+	 transform: translateY(10px);
+	 -webkit-transition: all 0.25s ease-out;
+	 -moz-transition: all 0.25s ease-out;
+	 -ms-transition: all 0.25s ease-out;
+	 -o-transition: all 0.25s ease-out;
+	 transition: all 0.25s ease-out;
+	 -webkit-transition: 2px 2px 6px rgba(0, 0, 0, 0.28);
+	 -moz-transition: 2px 2px 6px rgba(0, 0, 0, 0.28);
+	 -ms-transition: 2px 2px 6px rgba(0, 0, 0, 0.28);
+	 -o-transition: 2px 2px 6px rgba(0, 0, 0, 0.28);
+	 transition: 2px 2px 6px rgba(0, 0, 0, 0.28);
+}
+ .wrapper-tooltip .tooltip:before {
+	 bottom: -20px;
+	 content: " ";
+	 display: block;
+	 height: 20px;
+	 left: 0;
+	 position: absolute;
+	 width: 100%;
+}
+ .wrapper-tooltip .tooltip:after {
+	 border-left: solid transparent 10px;
+	 border-right: solid transparent 10px;
+	 border-top: solid #1496bb 10px;
+	 bottom: -10px;
+	 content: " ";
+	 height: 0;
+	 left: 90%;
+	 margin-left: -13px;
+	 position: absolute;
+	 width: 0;
+}
+ .fadein {
+	 text-align: center;
+	 animation: fadein 3s;
+}
+ @keyframes fadein {
+	 from {
+		 opacity: 0;
+	}
+	 to {
+		 opacity: 1;
+	}
+}
+ 
