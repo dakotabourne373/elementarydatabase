@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/elementarydatabase/static/css/main.45fcd303.chunk.css",
+    "main.js": "/elementarydatabase/static/js/main.e5b02af9.chunk.js",
+    "main.js.map": "/elementarydatabase/static/js/main.e5b02af9.chunk.js.map",
+    "runtime-main.js": "/elementarydatabase/static/js/runtime-main.9a1e1369.js",
+    "runtime-main.js.map": "/elementarydatabase/static/js/runtime-main.9a1e1369.js.map",
+    "static/js/2.f3f29630.chunk.js": "/elementarydatabase/static/js/2.f3f29630.chunk.js",
+    "static/js/2.f3f29630.chunk.js.map": "/elementarydatabase/static/js/2.f3f29630.chunk.js.map",
+    "index.html": "/elementarydatabase/index.html",
+    "precache-manifest.bc59bd45cdd6d9d9e9d47af442cab855.js": "/elementarydatabase/precache-manifest.bc59bd45cdd6d9d9e9d47af442cab855.js",
+    "service-worker.js": "/elementarydatabase/service-worker.js",
+    "static/css/main.45fcd303.chunk.css.map": "/elementarydatabase/static/css/main.45fcd303.chunk.css.map",
+    "static/js/2.f3f29630.chunk.js.LICENSE.txt": "/elementarydatabase/static/js/2.f3f29630.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.9a1e1369.js",
+    "static/js/2.f3f29630.chunk.js",
+    "static/css/main.45fcd303.chunk.css",
+    "static/js/main.e5b02af9.chunk.js"
+  ]
+}
