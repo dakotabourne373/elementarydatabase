@@ -1,13 +1,19 @@
 import React from 'react';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
+import Row from 'react-bootstrap/Row';
 
 function Teacher(props) {
     const [id, setID] = React.useState(props.id);
     const [teacherName, setName] = React.useState(props.name);
     const [editing, setEditing] = React.useState(false);
 
-    const edit = () => setEditing(!editing);
+    const edit = () => {
+        if (editing)
+            save();
+        setEditing(!editing);
+
+    }
 
     const save = () => {
         let newName = document.getElementById('teacher').value;
@@ -18,8 +24,8 @@ function Teacher(props) {
     const renderForm = () => {
         const content = (
             <div>
-                <textarea defaultValue={teacherName} className="note__textarea" onChange={() => save()} id='teacher' style={{ width: '100px' }} />
-                <Button className="note__save" onClick={() => edit()}> Save </Button>
+                <textarea defaultValue={teacherName} className="note__textarea" id='teacher' style={{ width: '100px' }} />
+                <Button className="note__save" variant='dark' onClick={() => edit()}> Save </Button>
             </div>
         );
         return content;
@@ -27,10 +33,14 @@ function Teacher(props) {
 
     return (
 
-        <Card style={{ width: '10rem' }}>
+        <Card style={{ width: '25rem' }}>
             <Card.Body>
-                {editing ? renderForm() : teacherName}
-                {editing ? "" : <Button variant='warning' onClick={() => edit()}> Edit Teacher</Button>}
+                <Row>
+                    {editing ? renderForm() : teacherName}
+                </Row>
+                <Row>
+                    {editing ? "" : <Button variant='warning' onClick={() => edit()}> Edit Teacher</Button>}
+                </Row>
             </Card.Body>
         </Card>
 

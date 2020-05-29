@@ -6,8 +6,9 @@ import Col from 'react-bootstrap/Col';
 import Class from './Class';
 import Teacher from './Teacher';
 import Student from './Student';
+import Container from 'react-bootstrap/Container';
 
-class Dashboard extends Component {
+class DashboardAdmin extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -63,6 +64,15 @@ class Dashboard extends Component {
                 student.name = newName;
                 this.props.firebase.student(student.id)
                     .update({ name: newName });
+                this.state.classes.map(room => {
+                    room.students.map(student => {
+                        if (student.id === id) {
+                            student.name = newName
+                        }
+                    })
+                    this.props.firebase.class(room.id)
+                        .update({ students: room.students })
+                })
             }
         })
     }
@@ -73,9 +83,25 @@ class Dashboard extends Component {
             if (teacher.id === id) {
                 teacher.name = newName;
                 this.props.firebase.teacher(teacher.id)
-                    .update({ name: newName })
+                    .update({ name: newName, id: teacher.id })
+                this.state.classes.map(room => {
+                    if (teacher.id === room.teacher.id) {
+                        this.setState(prevState => {
+                            let index = prevState.classes.indexOf(room);
+                            let update = prevState.classes[index];
+                            console.log(update);
+                            update.name = newName;
+                            console.log(update);
+                            prevState.classes.splice(index, 1);
+                            return { classes: [...prevState.classes, update] };
+                        });
+                        this.props.firebase.class(room.id)
+                            .update({ teacher: { name: newName, id: teacher.id } })
+                    }
+                })
             }
         })
+
     }
 
     addStudent = () => {
@@ -87,28 +113,31 @@ class Dashboard extends Component {
     }
 
     addClass = () => {
-        this.props.firebase.classes().push({ name: 'Class', teacher: "NOT SET YET", amountOfStudents: 0, students: [] })
+        this.props.firebase.classes().push({ name: 'Class', teacher: { name: "NOT SET YET", id: ' ' }, amountOfStudents: 0, students: [] })
     }
 
     render() {
         return (
-            <Row>
-                <Col>
-                    <Button variant='primary' onClick={() => this.addStudent()}>New Student</Button>
-                    {this.state.students.map(student => <Student id={student.id} name={student.name} updateName={this.updateStudentName} />)}
-                </Col>
-                <Col>
-                    <Button variant='primary' onClick={() => this.addTeacher()}>New Teacher</Button>
-                    {this.state.teachers.map(teacher => <Teacher id={teacher.id} name={teacher.name} updateName={this.updateTeacherName} />)}
-                </Col>
-                <Col>
-                    <Button variant='primary' onClick={() => this.addClass()}>New Class</Button>
-                    {this.state.classes.map(room => <Class teachers={this.state.teachers} students={this.state.students}
-                        name={room.name} studentsAssigned={room.students} teacherAssigned={room.teacher} id={room.id} studentCount={room.amountOfStudents} />)}
-                </Col>
-            </Row>
+            <Container fluid>
+                <Row>
+                    <Col className='text-center'>
+                        <Button variant='primary' onClick={() => this.addStudent()}>New Student</Button>
+                        {this.state.students.map(student => <Student id={student.id} name={student.name} updateName={this.updateStudentName} />)}
+                    </Col>
+                    <Col className='text-center'>
+                        <Button variant='primary' onClick={() => this.addTeacher()}>New Teacher</Button>
+                        {this.state.teachers.map(teacher => <Teacher id={teacher.id} name={teacher.name} updateName={this.updateTeacherName} />)}
+                    </Col>
+                    <Col xs={5}>
+                        <Button variant='primary' onClick={() => this.addClass()}>New Class</Button>
+                        {this.state.classes.map(room => <Class teachers={this.state.teachers} students={this.state.students}
+                            name={room.name} studentsAssigned={room.students} teacherAssigned={room.teacher} id={room.id} studentCount={room.amountOfStudents}
+                            firebase={this.props.firebase} />)}
+                    </Col>
+                </Row>
+            </Container>
         );
     }
 }
 
-export default withFirebase(Dashboard);
+export default withFirebase(DashboardAdmin);

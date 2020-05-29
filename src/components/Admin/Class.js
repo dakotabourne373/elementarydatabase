@@ -15,14 +15,17 @@ const Class = (props) => {
     const [id] = useState(props.id);
 
     useEffect(() => {
-        props.teachers.map(teacher => {
-            if (teacher.id === _teacher.id)
-                props.firebase.class(id)
-                    .update({
-                        teacher: teacher
-                    })
+        props.firebase.classes().on('value', snapshot => {
+            let classes = snapshot.val();
+            for (let room in classes) {
+                if (room === id) {
+                    setTeacher(classes[room].teacher);
+                    setStudents(classes[room].students ? classes[room].students : []);
+                    setAmount(classes[room].amountOfStudents);
+                }
+            }
         })
-    })
+    }, [editing])
 
     const edit = () => setEditing(true);
 
@@ -35,7 +38,10 @@ const Class = (props) => {
         return setName(newName);
     }
 
-    const save = () => setEditing(false);
+    const save = () => {
+        setEditing(false);
+        saveClass();
+    }
 
     const handleTeacherSet = (e) => {
         let tid = e.value;
@@ -46,9 +52,7 @@ const Class = (props) => {
             if (teacher.id === tid) {
                 setTeacher(teacher);
                 props.firebase.class(id)
-                    .update({
-                        teacher: teacher
-                    })
+                    .update({ teacher: { id: teacher.id, name: teacher.name } })
             }
         })
     }
@@ -99,7 +103,7 @@ const Class = (props) => {
                             <Select options={teachers} onChange={event => handleTeacherSet(event)} placeholder='Select a teacher to set' value={0} />
                             {_students.map(student => <Col>{student.name}</Col>)}
                             <Select options={possibleStudents} onChange={(event) => handleAddToClass(event)} placeholder='Select a student to add' value={0} />
-                            <Button onClick={() => save()} >Save Class!</Button>
+                            <Button variant='dark' onClick={() => save()} >Save Class!</Button>
                         </Card.Body>
                     </Accordion.Collapse>
                 </Accordion>

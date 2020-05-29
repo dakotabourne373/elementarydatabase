@@ -39,6 +39,7 @@ const INITIAL_STATE = {
           .set({
             username,
             email,
+            role: 'teacher'
           });
       })
       .then(() => {
