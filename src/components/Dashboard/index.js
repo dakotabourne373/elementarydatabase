@@ -1,97 +1,114 @@
 import React, { Component } from 'react';
 import Button from 'react-bootstrap/Button';
-import Card from 'react-bootstrap/Card';
-import { withFirebase } from '../Firebase'
+import { withFirebase } from '../Firebase';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Class from './Class';
+import Teacher from './Teacher';
+import Student from './Student';
 
 class Dashboard extends Component {
     constructor(props) {
         super(props);
         this.state = {
             students: [],
-            total: 0
+            classes: [],
+            teachers: []
         }
     }
 
     componentDidMount = () => {
         this.props.firebase.students().on('value', snapshot => {
             const studentObject = snapshot.val();
-
-            // if (studentObject) {
-            //     const studentList 
-            // } else {
-            //     this.setState({ students: null })
-            // }
+            let studentList = [];
+            for (let student in studentObject) {
+                studentList.push({
+                    id: student,
+                    name: studentObject[student].name
+                })
+            }
+            this.setState({ students: studentList });
+        })
+        this.props.firebase.teachers().on('value', snapshot => {
+            const teacherObj = snapshot.val();
+            let teacherList = [];
+            for (let teacher in teacherObj) {
+                teacherList.push({
+                    id: teacher,
+                    name: teacherObj[teacher].name
+                })
+            }
+            this.setState({ teachers: teacherList });
+        })
+        this.props.firebase.classes().on('value', snapshot => {
+            const classes = snapshot.val();
+            let classList = [];
+            for (let room in classes) {
+                classList.push({
+                    id: room,
+                    name: classes[room].name,
+                    amountOfStudents: classes[room].amountOfStudents,
+                    students: (classes[room].students ? classes[room].students : []),
+                    teacher: classes[room].teacher
+                })
+            }
+            this.setState({ classes: classList });
         })
     }
 
-    componentWillUnmount = () => {
-        this.props.firebase.students.push({
-            students: this.state.students,
-        });
-        this.props.firebase.students.off();
-    }
-
-    edit = () => {
-        this.setState({ editing: true });
-    }
-    save = () => {
-        this.setState({ editing: false });
-    }
-    add = () => {
-        let currentStudent = this.props.total;
-        currentStudent++;
-
-        this.setState(prevState => {
-            return {
-                students: [...prevState.students, <Student id={currentStudent} student={'Student'} />],
-                total: currentStudent
+    updateStudentName = (newName, id) => {
+        const { students } = this.state;
+        students.map(student => {
+            if (student.id === id) {
+                student.name = newName;
+                this.props.firebase.student(student.id)
+                    .update({ name: newName });
             }
         })
     }
 
+    updateTeacherName = (newName, id) => {
+        const { teachers } = this.state;
+        teachers.map(teacher => {
+            if (teacher.id === id) {
+                teacher.name = newName;
+                this.props.firebase.teacher(teacher.id)
+                    .update({ name: newName })
+            }
+        })
+    }
+
+    addStudent = () => {
+        this.props.firebase.students().push({ name: 'Student' });
+    }
+
+    addTeacher = () => {
+        this.props.firebase.teachers().push({ name: 'Teacher' });
+    }
+
+    addClass = () => {
+        this.props.firebase.classes().push({ name: 'Class', teacher: "NOT SET YET", amountOfStudents: 0, students: [] })
+    }
+
     render() {
         return (
-            <div>
-                <Button variant='primary' onClick={() => this.add()}>New Student</Button>
-                {this.state.students.map(student => student)}
-            </div>
+            <Row>
+                <Col>
+                    <Button variant='primary' onClick={() => this.addStudent()}>New Student</Button>
+                    {this.state.students.map(student => <Student id={student.id} name={student.name} updateName={this.updateStudentName} />)}
+                </Col>
+                <Col>
+                    <Button variant='primary' onClick={() => this.addTeacher()}>New Teacher</Button>
+                    {this.state.teachers.map(teacher => <Teacher id={teacher.id} name={teacher.name} updateName={this.updateTeacherName} />)}
+                </Col>
+                <Col>
+                    <Button variant='primary' onClick={() => this.addClass()}>New Class</Button>
+                    {this.state.classes.map(room => <Class teachers={this.state.teachers} students={this.state.students}
+                        name={room.name} studentsAssigned={room.students} teacherAssigned={room.teacher} id={room.id} studentCount={room.amountOfStudents} />)}
+                </Col>
+            </Row>
         );
     }
-}
-
-
-
-function Student(props) {
-    const [id, setID] = React.useState(props.id);
-    const [student, setStudent] = React.useState(props.student);
-    const [editing, setEditing] = React.useState(false);
-
-    const edit = () => setEditing(!editing);
-
-    const save = (e) => {
-        setStudent(document.getElementById('textarea').value)
-    }
-
-    const renderForm = () => {
-        const content = (
-            <div>
-                <textarea defaultValue={student} className="note__textarea" onChange={e => save(e)} id='textarea' />
-                <Button className="note__save" onClick={() => edit()}> Save </Button>
-            </div>
-        );
-        return content;
-    }
-
-    return (
-
-        <Card style={{ width: '10rem' }}>
-            <Card.Body>
-                {editing ? renderForm() : student}
-                {editing ? "" : <Button variant='warning' onClick={() => edit()} > Edit Student</Button>}
-            </Card.Body>
-        </Card>
-
-    );
 }
 
 export default withFirebase(Dashboard);
