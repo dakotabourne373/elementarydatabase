@@ -33,10 +33,22 @@ export default class Firebase {
 
     users = () => this.db.ref('users');
 
-    // *** Note API ***
+    // *** Student API ***
 
-    student = uid => this.db.ref(`students/${uid}`);
+    student = sid => this.db.ref(`students/${sid}`);
 
     students = () => this.db.ref('students');
+
+    // *** Teacher API ***
+
+    teacher = tid => this.db.ref(`teachers/${tid}`);
+
+    teachers = () => this.db.ref('teachers');
+
+    // *** Class API ***
+
+    class = cid => this.db.ref(`classes/${cid}`);
+
+    classes = () => this.db.ref('classes');
 
 }
