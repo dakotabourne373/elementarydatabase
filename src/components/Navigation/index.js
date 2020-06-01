@@ -34,10 +34,8 @@ const Navigation = ({ authUser, firebase }) => {
                 .then(snapshot => {
                     let userObject = snapshot.val();
                     if (userObject.role === 'admin') {
-                        console.log('true');
                         setDisplay(<AdminAuth />);
                     } else {
-                        console.log("false")
                         setDisplay(<TeacherAuth />);
                     }
                 })
@@ -55,7 +53,6 @@ const Navigation = ({ authUser, firebase }) => {
 
 const AdminAuth = () => (
     <div>
-        {console.log('admin hit')}
         <ul>
             <SignOutButton />
             <li>
@@ -70,7 +67,6 @@ const AdminAuth = () => (
 
 const TeacherAuth = () => (
     <div>
-        {console.log("teacher hit")}
         <ul>
             <SignOutButton />
             <li>
