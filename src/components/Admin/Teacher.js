@@ -38,7 +38,7 @@ function Teacher(props) {
                 <Row>
                     {editing ? renderForm() : teacherName}
                 </Row>
-                <Row>
+                <Row className='text-center'>
                     {editing ? "" : <Button variant='warning' onClick={() => edit()}> Edit Teacher</Button>}
                 </Row>
             </Card.Body>
