@@ -10,7 +10,7 @@ const Class = (props) => {
     const [className, setName] = useState(props.name);
     const [editing, setEditing] = useState(false);
     const [studentCount, setAmount] = useState(props.studentCount);
-    const [_students, setStudents] = useState((props.studentsAssigned ? props.studentsAssigned : []));
+    const [studentsAssigned, setStudents] = useState((props.studentsAssigned ? props.studentsAssigned : []));
     const [_teacher, setTeacher] = useState(props.teacherAssigned);
     const [id] = useState(props.id);
 
@@ -61,26 +61,34 @@ const Class = (props) => {
         let sid = e.value;
         if (sid === 0)
             return;
-        console.log(studentCount);
 
         props.students.map(student => {
             if (student.id === sid) {
-                setStudents([..._students, student]);
+                setStudents([...studentsAssigned, student]);
                 setAmount(studentCount + 1);
                 props.firebase.class(id)
                     .update({
-                        students: [..._students, student],
+                        students: [...studentsAssigned, student],
                         amountOfStudents: studentCount + 1
                     })
             }
         })
+    }
+    const containsObject = obj => {
+        var i;
+        for (i = 0; i < studentsAssigned.length; i++) {
+            if (studentsAssigned[i].id === obj.id) {
+                return true;
+            }
+        }
+        return false;
     }
 
     const renderEditForm = () => {
         let possibleStudents = []
         let teachers = []
         props.students.map(student => {
-            if (!_students.includes(student)) {
+            if (!containsObject(student)) {
                 possibleStudents.push({ value: student.id, label: student.name });
             }
         })
@@ -101,7 +109,7 @@ const Class = (props) => {
                     <Accordion.Collapse eventKey={id}>
                         <Card.Body>
                             <Select options={teachers} onChange={event => handleTeacherSet(event)} placeholder='Select a teacher to set' value={0} />
-                            {_students.map(student => <Col>{student.name}</Col>)}
+                            {studentsAssigned.map(student => <Col>{student.name}</Col>)}
                             <Select options={possibleStudents} onChange={(event) => handleAddToClass(event)} placeholder='Select a student to add' value={0} />
                             <Button variant='dark' onClick={() => save()} >Save Class!</Button>
                         </Card.Body>
@@ -122,8 +130,8 @@ const Class = (props) => {
                     </Card.Header>
                     <Accordion.Collapse eventKey={id}>
                         <Card.Body>
-                            {_students.map(student => <Col>{student.name}</Col>)}
-                            <Button onClick={() => edit()} >Edit Class!</Button>
+                            {studentsAssigned.map(student => <Col>{student.name}</Col>)}
+                            <Button variant='warning' onClick={() => edit()} >Edit Class!</Button>
                         </Card.Body>
                     </Accordion.Collapse>
                 </Accordion>
